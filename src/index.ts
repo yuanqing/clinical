@@ -1,4 +1,4 @@
-export type Value = boolean | number | string
+export type Value = boolean | null | number | string
 
 export default function (
   version: string,
@@ -42,7 +42,7 @@ export default function (
     const nextOption = parseOption(nextArg)
     if (nextOption === null) {
       options[currentOption.name] = castToValue(nextArg)
-      i += 1
+      ++i
       continue
     }
     options[currentOption.name] = true
@@ -50,7 +50,7 @@ export default function (
   return { options, positionals }
 }
 
-export function parseOption(
+function parseOption(
   arg: undefined | string
 ): null | { name: string; value: null | string } {
   if (typeof arg === 'undefined') {
@@ -68,12 +68,15 @@ export function parseOption(
   }
 }
 
-export function castToValue(arg: string): Value {
+function castToValue(arg: string): Value {
   if (arg === 'false') {
     return false
   }
   if (arg === 'true') {
     return true
+  }
+  if (arg === 'null') {
+    return null
   }
   if (/^-?(?:\d*\.)?\d+$/.test(arg) === true) {
     return parseFloat(arg) as number
