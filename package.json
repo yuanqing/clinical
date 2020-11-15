@@ -1,6 +1,6 @@
 {
   "name": "clinical",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A minimum-viable arguments parser in ~90 LOC with zero dependencies",
   "keywords": [
     "args",
