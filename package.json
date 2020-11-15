@@ -1,7 +1,7 @@
 {
   "name": "clinical",
   "version": "0.0.1",
-  "description": "A minimum-viable arguments parser in 80+ LOC",
+  "description": "A minimum-viable arguments parser in ~90 LOC with zero dependencies",
   "keywords": [
     "args",
     "cli",
@@ -23,6 +23,7 @@
     "build": "yarn run clean && tsc",
     "clean": "rimraf '*.log' .nyc_output build coverage lib",
     "coverage": "rimraf .nyc_output coverage && nyc --reporter=html --reporter=lcov --reporter=text yarn run test",
+    "docs": "markdown-interpolate README.md",
     "fix": "eslint --fix 'src/**/*.ts'",
     "lint": "eslint 'src/**/*.ts'",
     "prepublishOnly": "yarn run build",
@@ -37,9 +38,11 @@
     "eslint-config-yuanqing": "^0.0.4",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
+    "markdown-interpolate": "^0.0.7",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "tap": "^14.10.8",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   },
   "eslintConfig": {

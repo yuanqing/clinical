@@ -2,7 +2,7 @@ export type Value = boolean | null | number | string
 
 export default function (
   version: string,
-  help: string,
+  helpMessage: string,
   args: Array<string> = process.argv.slice(2)
 ): void | {
   positionals: Array<Value>
@@ -24,7 +24,7 @@ export default function (
       continue
     }
     if (/^h(?:elp)?$/.test(currentOption.name) === true) {
-      console.log(help) // eslint-disable-line no-console
+      console.log(helpMessage) // eslint-disable-line no-console
       process.exit()
     }
     if (/^v(?:ersion)?$/.test(currentOption.name) === true) {
@@ -39,23 +39,24 @@ export default function (
       continue
     }
     const nextArg = args[i + 1]
-    const nextOption = parseOption(nextArg)
-    if (nextOption === null) {
-      options[currentOption.name] = castToValue(nextArg)
-      ++i
+    if (typeof nextArg === 'undefined' || nextArg === '--') {
+      options[currentOption.name] = true
       continue
     }
-    options[currentOption.name] = true
+    const nextOption = parseOption(nextArg)
+    if (nextOption !== null) {
+      options[currentOption.name] = true
+      continue
+    }
+    options[currentOption.name] = castToValue(nextArg)
+    ++i
   }
   return { options, positionals }
 }
 
 function parseOption(
-  arg: undefined | string
+  arg: string
 ): null | { name: string; value: null | string } {
-  if (typeof arg === 'undefined') {
-    return null
-  }
   const matches = arg.match(/^--?(\w[\w-]*)(?:=(.*))?$/)
   if (matches === null) {
     return null
@@ -68,12 +69,12 @@ function parseOption(
   }
 }
 
-function castToValue(arg: string): Value {
+function castToValue(arg: undefined | string): Value {
+  if (typeof arg === 'undefined' || arg === 'true') {
+    return true
+  }
   if (arg === 'false') {
     return false
-  }
-  if (arg === 'true') {
-    return true
   }
   if (arg === 'null') {
     return null
